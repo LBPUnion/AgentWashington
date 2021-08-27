@@ -11,4 +11,15 @@
         <Product>LBPUnion.AgentWashington</Product>
     </PropertyGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Discord.Net" Version="2.4.0" />
+      <PackageReference Include="LiteDB" Version="5.0.11" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="config.example.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
 </Project>

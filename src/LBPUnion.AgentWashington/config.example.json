@@ -1,0 +1,24 @@
+{
+  "Connection": {
+    "CommandPrefix": "aw:",
+    "DiscordBotToken": "Please enter your Discord bot token here."
+  },
+  "Features": {
+    "EnableLiveMonitor": false,
+    "EnableMonitorHistory": false,
+    "DeveloperUserId": 794018198743285771
+  },.
+  "Guilds": {
+    "848446337619722240": {
+      "Name": aklnthndr's server,
+      "AdministratorUsers": [
+        794018198743285771
+      ],
+      "AdministratorRoles": [
+        848447096168513556
+      ],
+      "LiveMonitorChannelId": 880920385003077663,
+      "MonitorHistoryChannelId": 880920427831123969
+    }
+  }
+}

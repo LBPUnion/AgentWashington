@@ -2,6 +2,12 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlkalineThunder.CraftworldMonitor", "AlkalineThunder.CraftworldMonitor\AlkalineThunder.CraftworldMonitor.csproj", "{E687DC53-CC13-4E3A-8A25-134A109A98A4}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Repository Root", "Repository Root", "{34DE0A9B-6BF2-4217-9B6C-155070DB026F}"
+ProjectSection(SolutionItems) = preProject
+	..\LICENSE = ..\LICENSE
+	..\README.md = ..\README.md
+EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

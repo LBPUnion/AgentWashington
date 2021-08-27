@@ -1,6 +1,6 @@
-# Craftworld Monitor
+# Agent Washington
 
-Craftworld Monitor is an open-source, open-minded LittleBigPlanet server monitoring tool. It is written in C# and is designed to be easily readable and extendable. It only monitors the game servers that are actually important, and is also aimed to cause as little confusion and spread of misinformation as possible in the game's community.
+Agent Washington is an open-source, open-minded LittleBigPlanet server monitoring tool. It is written in C# and is designed to be easily readable and extendable. It only monitors the game servers that are actually important, and is also aimed to cause as little confusion and spread of misinformation as possible in the game's community.
 
 In its current form, this tool monitors the main game server port and sends an HTTP request to it. If the request succeeds, the response is written to the console. Otherwise, the status code and error text is written, and an explanation of what this means in the context of LBP is also written.
 

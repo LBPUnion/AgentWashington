@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net5.0</TargetFramework>
+        <AssemblyName>LBPUnion.AgentWashington</AssemblyName>
+        <RootNamespace>LBPUnion.AgentWashington</RootNamespace>
+        <PackageId>LBPUnion.AgentWashington</PackageId>
+        <Authors>LBPUnion.AgentWashington</Authors>
+        <Company>LBPUnion.AgentWashington</Company>
+        <Product>LBPUnion.AgentWashington</Product>
+    </PropertyGroup>
+
+</Project>

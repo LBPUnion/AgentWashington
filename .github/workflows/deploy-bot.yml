@@ -1,0 +1,21 @@
+name: "Deploy Agent Washington"
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: "Build-a-bot"
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '5.0.x'
+      - run: "mkdir -p ./artifacts/bot"
+      - run: "dotnet publish ./src/LBPUnion.AgentWashington/LBPUnion.AgentWashington.csproj --self-contained true --runtime linux-x64 --output ./artifacts/bot"
+      - uses: burnett01/rsync-deployments@4.1
+        with:
+          switches: "-avzr --delete"
+          path: "./artifacts/bot"
+          remote_path: "/opt/agent-washington/deploy"
+          remote_user: ${{ secrets.SPARKY_DEPLOY_USER }}
+          remote_key: ${{ secrets.SPARKY_DEPLOY_KEY }}
+          remote_host: "${{ secrets.SPARKY_DEPLOY_HOST }}"

@@ -29,6 +29,67 @@ namespace LBPUnion.AgentWashington
             _db = OpenDatabase();
         }
 
+        public static bool GetLastKnownServerStatus(GameServer server, out ServerStatus serverStatus)
+        {
+            var statuses = _db.GetCollection<KnownServerStatus>("knownStatuses");
+
+            var knownStatus = statuses.FindOne(x => x.Url == server.Url);
+            if (knownStatus == null)
+            {
+                serverStatus = null;
+                return false;
+            }
+            else
+            {
+                serverStatus = new ServerStatus(server, knownStatus.StatusCode, knownStatus.Meaning,
+                    knownStatus.IsOnline switch
+                    {
+                        OnlineStatus.Online => true,
+                        OnlineStatus.Offline => false,
+                        OnlineStatus.Unknown => null
+                    }, knownStatus.LastChecked);
+                return true;
+            }
+        }
+
+        public static void SetLastKnownServerStatus(GameServer server, ServerStatus serverStatus)
+        {
+            var statuses = _db.GetCollection<KnownServerStatus>("knownStatuses");
+
+            var knownStatus = statuses.FindOne(x => x.Url == server.Url);
+            if (knownStatus == null)
+            {
+                knownStatus = new KnownServerStatus
+                {
+                    Url = server.Url,
+                    StatusCode = serverStatus.ResponseStatusCode,
+                    IsOnline = serverStatus.IsOnline switch
+                    {
+                        true => OnlineStatus.Online,
+                        false => OnlineStatus.Offline,
+                        null => OnlineStatus.Unknown
+                    },
+                    LastChecked = serverStatus.LastChecked,
+                    Meaning = serverStatus.Meaning
+                };
+                statuses.Insert(knownStatus);
+            }
+            else
+            {
+                knownStatus.Url = server.Url;
+                knownStatus.StatusCode = serverStatus.ResponseStatusCode;
+                knownStatus.IsOnline = serverStatus.IsOnline switch
+                {
+                    true => OnlineStatus.Online,
+                    false => OnlineStatus.Offline,
+                    null => OnlineStatus.Unknown
+                };
+                knownStatus.LastChecked = serverStatus.LastChecked;
+                knownStatus.Meaning = serverStatus.Meaning;
+                statuses.Update(knownStatus);
+            }
+        }
+        
         public static bool GetGuildLiveMonitorMessageId(ulong guild, out ulong messageId)
         {
             var guildMessages = _db.GetCollection<GuildMessage>("liveMonitorMessages");
@@ -80,5 +141,22 @@ namespace LBPUnion.AgentWashington
         public int Id { get; set; }
         public ulong GuildId { get; set; }
         public ulong MessageId { get; set; }
+    }
+
+    public class KnownServerStatus
+    {
+        public int Id { get; set; }
+        public string Url { get; set; }
+        public int StatusCode { get; set; }
+        public OnlineStatus IsOnline { get; set; }
+        public DateTime LastChecked { get; set; }
+        public string Meaning { get; set; }
+    }
+
+    public enum OnlineStatus
+    {
+        Online,
+        Offline,
+        Unknown
     }
 }

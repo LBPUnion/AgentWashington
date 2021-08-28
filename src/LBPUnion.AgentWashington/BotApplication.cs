@@ -127,6 +127,8 @@ namespace LBPUnion.AgentWashington
 
                 if (hasChanged)
                 {
+                    Database.SetLastKnownServerStatus(server, result);
+                    
                     postLiveUpdate = true;
                     
                     foreach (var guildId in _config.Guilds.Keys)
@@ -289,6 +291,15 @@ namespace LBPUnion.AgentWashington
 
             Database.Open();
             
+            // Restore server statuses.
+            foreach (var server in _serversToMonitor)
+            {
+                if (Database.GetLastKnownServerStatus(server, out var status))
+                {
+                    _status.Add(server, status);
+                }
+            }
+            
             _client.Log += ClientOnLog;
             _client.Ready += ClientOnReady;
         }
@@ -342,6 +353,15 @@ namespace LBPUnion.AgentWashington
         public string RequestPath { get; set; }
         public bool IgnoreCertificateErrors { get; set; }
         public int Port { get; set; }
+
+        public string Url
+        {
+            get
+            {
+                var proto = UseHttps ? "https" : "http";
+                return $"{proto}://{Host}:{Port}{RequestPath}";
+            }
+        }
     }
 
     public class ServerStatus
@@ -352,18 +372,24 @@ namespace LBPUnion.AgentWashington
         public bool? IsOnline { get; }
         public DateTime LastChecked { get; }
 
-        public ServerStatus(GameServer gameServer, int code, string meaning, bool? isOnline)
+        public ServerStatus(GameServer gameServer, int code, string meaning, bool? isOnline, DateTime lastChecked)
         {
             Server = gameServer;
             ResponseStatusCode = code;
             IsOnline = isOnline;
             Meaning = meaning;
-            LastChecked = DateTime.UtcNow;
+            LastChecked = lastChecked;
+        }
+
+        public ServerStatus(GameServer gameServer, int code, string meaning, bool? isOnline)
+            : this(gameServer, code, meaning, isOnline, DateTime.UtcNow)
+        {
+            
         }
 
         public bool IdenticalTo(ServerStatus otherStatus)
         {
-            return this.Server == otherStatus.Server && this.ResponseStatusCode == otherStatus.ResponseStatusCode;
+            return this.Server.Url == otherStatus.Server.Url && this.ResponseStatusCode == otherStatus.ResponseStatusCode;
         }
     }
 }

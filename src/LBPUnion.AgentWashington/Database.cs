@@ -6,16 +6,34 @@ namespace LBPUnion.AgentWashington
 {
     public static class Database
     {
+        private static LiteDatabase _db;
+
+        public static void CommitChanges()
+        {
+            _db.Commit();
+        }
+        
+        public static void Close()
+        {
+            if (_db == null)
+                throw new InvalidOperationException("Database isn't open.");
+            _db.Dispose();
+            _db = null;
+        }
+        
+        public static void Open()
+        {
+            if (_db != null)
+                throw new InvalidOperationException("Database already open.");
+
+            _db = OpenDatabase();
+        }
 
         public static bool GetGuildLiveMonitorMessageId(ulong guild, out ulong messageId)
         {
-            using var db = OpenDatabase();
-
-            var guildMessages = db.GetCollection<GuildMessage>("liveMonitorMessages");
+            var guildMessages = _db.GetCollection<GuildMessage>("liveMonitorMessages");
 
             var msg = guildMessages.FindOne(x => x.GuildId == guild);
-
-            db.Dispose();
 
             if (msg != null)
             {
@@ -31,9 +49,7 @@ namespace LBPUnion.AgentWashington
 
         public static void SetGuildLiveMonitorMessageId(ulong guild, ulong messageId)
         {
-            using var db = OpenDatabase();
-
-            var guildMessages = db.GetCollection<GuildMessage>("liveMonitorMessages");
+            var guildMessages = _db.GetCollection<GuildMessage>("liveMonitorMessages");
 
             var msg = guildMessages.FindOne(x => x.GuildId == guild);
 
@@ -51,8 +67,6 @@ namespace LBPUnion.AgentWashington
                 };
                 guildMessages.Insert(msg);
             }
-            
-            db.Dispose();
         }
 
         private static LiteDatabase OpenDatabase()

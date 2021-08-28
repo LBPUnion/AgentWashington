@@ -77,6 +77,8 @@ namespace LBPUnion.AgentWashington
                 {
                     monitorSince = TimeSpan.Zero;
                     await UpdateMonitorDataAsync();
+
+                    Database.CommitChanges();
                 }
 
                 monitorSince += updateTime;
@@ -284,6 +286,8 @@ namespace LBPUnion.AgentWashington
         private void BeginClientConnection()
         {
             _client = new DiscordSocketClient();
+
+            Database.Open();
             
             _client.Log += ClientOnLog;
             _client.Ready += ClientOnReady;

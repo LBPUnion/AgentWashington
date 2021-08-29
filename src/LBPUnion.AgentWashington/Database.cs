@@ -11,6 +11,8 @@ namespace LBPUnion.AgentWashington
         public static void CommitChanges()
         {
             _db.Commit();
+            Close();
+            Open();
         }
         
         public static void Close()

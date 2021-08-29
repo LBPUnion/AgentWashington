@@ -1,9 +1,4 @@
 ﻿using System;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Net.Security;
-using System.Security.Cryptography.X509Certificates;
 
 namespace LBPUnion.AgentWashington
 {
@@ -11,6 +6,10 @@ namespace LBPUnion.AgentWashington
     {
         static void Main(string[] args)
         {
+            // This allows the database layer to shut down and save the changes if the OS pulls the plug on us
+            // (e.x, systemctl stop agent-washington when we're running as a systemd service)
+            AppDomain.CurrentDomain.ProcessExit += CurrentDomainOnProcessExit;
+            
 #if !DEBUG
             try 
             {
@@ -37,6 +36,11 @@ namespace LBPUnion.AgentWashington
                 Console.WriteLine(ex);
             }
 #endif
+        }
+
+        private static void CurrentDomainOnProcessExit(object? sender, EventArgs e)
+        {
+            Database.Close();
         }
     }
 }

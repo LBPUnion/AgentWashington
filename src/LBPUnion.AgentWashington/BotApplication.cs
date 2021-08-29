@@ -15,6 +15,7 @@ namespace LBPUnion.AgentWashington
 {
     public sealed class BotApplication
     {
+        private WebDatabase _webDB;
         private DiscordBotConfiguration _config;
         private DiscordSocketClient _client;
         private bool _running;
@@ -23,8 +24,14 @@ namespace LBPUnion.AgentWashington
         private bool _isConnected = false;
         private readonly string LocalDataPath = AppDomain.CurrentDomain.BaseDirectory;
 
-        public void RegisterGameServer(string host, bool secure, int port, bool dnsLookup, string requestPath = "/", bool ignoreCertErrors = false)
+        public void RegisterGameServer(string name, string desc, string host, bool secure, int port, bool dnsLookup, string requestPath = "/", bool ignoreCertErrors = false)
         {
+            if (string.IsNullOrWhiteSpace(name))
+                throw new InvalidOperationException("Server name must not be blank");
+
+            if (string.IsNullOrWhiteSpace(desc))
+                throw new InvalidOperationException("Server description can't be null.");
+            
             if (string.IsNullOrWhiteSpace(host))
                 throw new InvalidOperationException("Host must not be empty or blank.");
 
@@ -33,6 +40,8 @@ namespace LBPUnion.AgentWashington
 
             var server = new GameServer
             {
+                Name = name,
+                Description = desc,
                 Host = host,
                 PerformDnsLookup = dnsLookup,
                 Port = port,
@@ -124,6 +133,8 @@ namespace LBPUnion.AgentWashington
 
                     liveEmbed.AddField($"{server.Host}:{server.Port}", $"{emoji} {result.ResponseStatusCode}");
                 }
+
+                await _webDB?.ReportServerStatus(result, hasChanged);
 
                 if (hasChanged)
                 {
@@ -287,6 +298,11 @@ namespace LBPUnion.AgentWashington
 
         private void BeginClientConnection()
         {
+            if (!string.IsNullOrWhiteSpace(_config.Connection.MongoConnectionString))
+            {
+                _webDB = new(_config.Connection.MongoConnectionString);
+            }
+            
             _client = new DiscordSocketClient();
 
             Database.Open();
@@ -347,6 +363,8 @@ namespace LBPUnion.AgentWashington
 
     public sealed class GameServer
     {
+        public string Name { get; set; }
+        public string Description { get; set; }
         public string Host { get; set; }
         public bool PerformDnsLookup { get; set; }
         public bool UseHttps { get; set; }

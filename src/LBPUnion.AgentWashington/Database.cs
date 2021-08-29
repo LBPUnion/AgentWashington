@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using LiteDB;
+using MongoDB.Driver;
 
 namespace LBPUnion.AgentWashington
 {

@@ -28,6 +28,20 @@ namespace LBPUnion.AgentWashington
                     true // Ignore certificate errors.
                 );
                 
+                // Vita servers
+                bot.RegisterGameServer(
+                        "LBP Vita Game Servers", // server name,
+                        "Game server host for LittleBigPlanet PS Vita",
+                    "lbpvita.online.scee.com", // Mainline game server
+                    true, // Use HTTPS instead of HTTP
+                    10061, // Gameserver HTTPS port
+                    true, // Perform a DNS lookup before we do anything else
+                    "/", // Request path.
+                    true // Ignore certificate errors.
+                );
+                
+                
+                
                 bot.Run();
 #if !DEBUG
             }

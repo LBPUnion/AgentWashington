@@ -134,7 +134,8 @@ namespace LBPUnion.AgentWashington
                     liveEmbed.AddField($"{server.Host}:{server.Port}", $"{emoji} {result.ResponseStatusCode}");
                 }
 
-                await _webDB?.ReportServerStatus(result, hasChanged);
+                if (_webDB != null)
+                    await _webDB.ReportServerStatus(result, hasChanged);
 
                 if (hasChanged)
                 {
@@ -300,7 +301,18 @@ namespace LBPUnion.AgentWashington
         {
             if (!string.IsNullOrWhiteSpace(_config.Connection.MongoConnectionString))
             {
-                _webDB = new(_config.Connection.MongoConnectionString);
+                try
+                {
+                    _webDB = new(_config.Connection.MongoConnectionString);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(
+                        "[Agent Washington] Could not connect to MongoDB server for server status reporting. Please check your config.json.");
+                    Console.WriteLine(ex);
+                    _webDB = null;
+                }
+
             }
             
             _client = new DiscordSocketClient();

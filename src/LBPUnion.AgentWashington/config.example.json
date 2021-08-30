@@ -1,7 +1,8 @@
 {
   "Connection": {
     "CommandPrefix": "aw:",
-    "DiscordBotToken": "Please enter your Discord bot token here."
+    "DiscordBotToken": "Please enter your Discord bot token here.",
+    "MongoConnectionString": ""
   },
   "Features": {
     "EnableLiveMonitor": false,

@@ -18,6 +18,8 @@ namespace LBPUnion.AgentWashington
                 
                 // this is where we register servers to monitor.
                 bot.RegisterGameServer(
+                        "Mainline Game Servers", // server name,
+                        "Main LittleBigPlanet game server for LBP 1, 2, and 3.",
                     "littlebigplanetps3.online.scee.com", // Mainline game server
                     true, // Use HTTPS instead of HTTP
                     10061, // Gameserver HTTPS port

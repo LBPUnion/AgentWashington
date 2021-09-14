@@ -354,6 +354,10 @@ namespace LBPUnion.AgentWashington
         {
             return code switch
             {
+                200 =>
+                    "This status code means that we were able to make a connection to the LBP server and were able to successfully retrieve information. In-game services should be working fine. :)",
+                404 => 
+                    "This status code means that we were able to make a connection to the LBP server but we requested something that's not there.",
                 503 =>
                     "In LittleBigPlanet, this error means that the servers are currently undergoing maintenance. This will show up in-game as Error Code 403, which  also just means an unknown error has occurred. The servers are down but they'll likely be back up in the future.",
                 _ =>
@@ -366,7 +370,7 @@ namespace LBPUnion.AgentWashington
             return statusCode switch
             {
                 200 => true,
-                404 => null, // we don't know
+                404 => true, // we don't know
                 _ => false
             };
         }

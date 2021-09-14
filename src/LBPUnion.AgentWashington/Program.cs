@@ -18,8 +18,8 @@ namespace LBPUnion.AgentWashington
                 
                 // this is where we register servers to monitor.
                 bot.RegisterGameServer(
-                        "PS4 Game Servers", // server name,
-                        "Game server for LittleBigPlanet 3 on the PS4.",
+                    "PS4 Game Servers", // server name,
+                    "Game server for LittleBigPlanet 3 on the PS4.",
                     "gameserver.lbp.me", // Mainline game server
                     true, // Use HTTPS instead of HTTP
                     10061, // Gameserver HTTPS port
@@ -27,21 +27,7 @@ namespace LBPUnion.AgentWashington
                     "/", // Request path.
                     true // Ignore certificate errors.
                 );
-                
-                // Vita servers
-                bot.RegisterGameServer(
-                        "LBP Vita Game Servers", // server name,
-                        "Game server host for LittleBigPlanet PS Vita",
-                    "lbpvita.online.scee.com", // Mainline game server
-                    true, // Use HTTPS instead of HTTP
-                    10061, // Gameserver HTTPS port
-                    true, // Perform a DNS lookup before we do anything else
-                    "/", // Request path.
-                    true // Ignore certificate errors.
-                );
-                
-                
-                
+
                 bot.Run();
 #if !DEBUG
             }

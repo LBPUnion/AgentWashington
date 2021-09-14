@@ -131,7 +131,7 @@ namespace LBPUnion.AgentWashington
                         null => ":question:"
                     };
 
-                    liveEmbed.AddField($"{server.Host}:{server.Port}", $"{emoji} {result.ResponseStatusCode}");
+                    liveEmbed.AddField($"{server.Name} ({server.Host}:{server.Port})", $"{emoji} {result.ResponseStatusCode}");
                 }
 
                 if (_webDB != null)

@@ -126,7 +126,7 @@ namespace LBPUnion.AgentWashington
 
                     var emoji = result.IsOnline switch
                     {
-                        true => ":white_check_mark",
+                        true => ":white_check_mark:",
                         false => ":no_entry_sign:",
                         null => ":question:"
                     };
